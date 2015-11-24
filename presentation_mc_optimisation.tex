@@ -5,8 +5,9 @@
 \usepackage{dsfont}
 \usepackage{stmaryrd}
 \usepackage{graphicx}
+\usepackage{animate}
 
-\graphicspath{{./images/}}
+\graphicspath{{./images/}{./images/video/}}
 
 \title{Optimisation stochastique, (RJ)MCMC\\ et applications g\'eospatiales}
 \author{}
@@ -69,10 +70,39 @@ avec $\mathcal{B}=[0,W]\times[0,H]\times[-S,S]^2\times[1/R,R] \subset  \mathds{R
 \end{frame}
 
 \begin{frame}
-\frametitle{Marquages au sol}
-\emph{TODO Bahman}
+\frametitle{Extraction des marquages aux sols}
+\emph{Le probl\`eme~:} 
+\begin{itemize}
+\item Détecter différents types de marquages sur une ortho-image.
+\end{itemize}
+\emph{Les concepts~:}
+\begin{itemize}
+\item MPP~:  $\mathcal{C} = \cup_{n}\mathcal{B}^n$\\
+avec $\mathcal{B}=\{1...\vert \mathcal{L}\vert\}\times [0,W]\times[0,H]\times[-\pi,\pi]\times[\lambda-\epsilon,\lambda + \epsilon] \subset  \mathds{R}^{5}$
+\item Noyaux~: Naissance/mort, translation, rotation, changement d'échelle, changement de type. 
+\item Processus de référence~:
+\begin{itemize}
+\item Processus de poisson sur $n$
+\item \color{red}{Data\&Model driven}
+\end{itemize}
+\item \'Energie~: $E = \sum_i E_1(x_i) + \sum_{i<j} E_2(x_i,x_j)$
+\begin{itemize}
+\item $E_1(x_i)=\alpha_{0} - E_{data}(x_i)$ avec $\alpha_{0}>0$ ;
+\item $E_2(x_i,x_j) = \frac{(x_i \cap x_j)}{min(surface(x_i),surface(x_j)}$.
+\end{itemize}
+\end{itemize}
 \end{frame}
-
+%
+\begin{frame}
+\frametitle{Extraction des marquages aux sols}
+\emph{R\'esultats~:}
+\begin{center}
+\begin{figure}[ht]
+\animategraphics[scale=0.5, controls]{12}{}{1}{92}
+\end{figure}
+sss
+\end{center}
+\end{frame}
 
 \begin{frame}
 \frametitle{Simplu3D}
@@ -81,9 +111,6 @@ avec $\mathcal{B}=[0,W]\times[0,H]\times[-S,S]^2\times[1/R,R] \subset  \mathds{R
 \item Génération de configurations bâties pour évaluer l'influence des réglements des PLU
 \end{itemize}
 \emph{Les concepts~:}
-
-
-
 \begin{columns}
 \begin{column}{0.55\textwidth}
 \begin{itemize}
