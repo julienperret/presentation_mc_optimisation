@@ -16,6 +16,7 @@
 
 # I ignore pdf because I don't want the generated pdf to be pushed...
 *.pdf
+!images/*.pdf
 
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
 *.bbl
