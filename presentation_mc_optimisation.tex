@@ -9,10 +9,10 @@
 \RequirePackage{tikz}
 \usetikzlibrary{arrows}
 
-%\usepackage{animate}
+\usepackage{animate}
 %\usepackage{multimedia}
-\usepackage{hyperref}
-\usepackage{media9}
+%\usepackage{hyperref}
+%\usepackage{media9}
 
 \lstset{language=C++,
   basicstyle=\tiny,
@@ -29,7 +29,7 @@
 \newcommand{\patternscale}{.3}
 \newcommand{\patternspace}{1mm}
 \graphicspath{{./images/}{./images/video/}}
-\addmediapath{./images/video/}
+%\addmediapath{./images/video/}
 
 \title{Optimisation stochastique, (RJ)MCMC\\ et applications g\'eospatiales}
 \author{\underline{Mathieu Brédif}, \underline{Julien Perret}, Bahman Soheilian\\Mickael Brasebin et Alexandre Hervieu}
@@ -44,11 +44,19 @@
 
 \begin{frame}
 \frametitle{Contexte}
-TODO: JP
 \begin{itemize}
-\item La recherche de l'IGN a souvent des probl\`emes d'optimisation (comme tout le monde)
-\item D\'eveloppement d'outils \emph{sp\'ecifiques} (g\'en\'eralisation carto)
+\item Les chercheurs de l'IGN ont souvent des probl\`emes d'optimisation\\
+(comme (presque) tout le monde)\\
+il y a peu de chance que \c{c}a change 
+\item D\'eveloppement d'outils \emph{sp\'ecifiques}\\
+(g\'en\'eralisation cartographique, r\'eseau g\'eod\'esique, etc.)\\
+parfois en redéveloppant des algorithmes similaires
 \item D\'eveloppement d'une biblioth\`eque plus \emph{g\'en\'erique}
+\begin{itemize}
+\item factorisation de code
+\item am\'elioration des outils
+\item cr\'eation de collaborations entre chercheurs
+\end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -105,9 +113,9 @@ avec $\mathcal{B}=[0,W]\times[0,H]\times[-S,S]^2\times[1/R,R] \subset  \mathds{R
 \item Processus de poisson sur $n$
 \item Uniforme sur $\mathcal{B}$
 \end{itemize}
-\item \'Energie~: $E = \sum_i E_1(x_i) + \sum_{i<j} E_2(x_i,x_j)$
+\item \'Energie~: $E = \sum_i E_1(x_i) + \alpha_{0} \times \sum_{i<j} E_2(x_i,x_j)$
 \begin{itemize}
-\item $E_1(x_i)=\alpha_{0} - E_{data}(x_i)$ avec $\alpha_{0}>0$ ;
+\item $E_1(x_i)=\alpha_{1} - E_{data}(x_i)$ avec $\alpha_{0}>0$ ;
 \item $E_2(x_i,x_j) = surface(x_i \cap x_j)$.
 \end{itemize}
 \end{itemize}
@@ -116,15 +124,15 @@ avec $\mathcal{B}=[0,W]\times[0,H]\times[-S,S]^2\times[1/R,R] \subset  \mathds{R
 
 \begin{frame}
 \frametitle{Simplu3D}
-\emph{Le probl\`eme~:}  Simulation des droits \`a batir
+\emph{Le probl\`eme~:}  Simulation des droits \`a batir sur une parcelle
 \begin{itemize}
-\item Génération de configurations bâties pour évaluer l'influence des réglements des PLU
+\item Génération de configurations bâties pour évaluer l'influence des règles d'un PLU
 \end{itemize}
 \emph{Les concepts~:}
 \begin{columns}
 \begin{column}{0.55\textwidth}
 \begin{itemize}
-\item MPP~:  $ \mathcal{C} =\mathcal{PLU} \cap \cup_{n} \mathcal{B}^n$  avec $\mathcal{B}  \subset  \mathds{R}^{6}$
+\item MPP~: $ \mathcal{C} =\mathcal{PLU} \cap \cup_{n} \mathcal{B}^n$\\avec $\mathcal{B}  \subset  \mathds{R}^{6}$
 \item Noyaux~: mêmes noyaux + Changement de hauteur
 \end{itemize}
 \end{column}
@@ -133,15 +141,13 @@ avec $\mathcal{B}=[0,W]\times[0,H]\times[-S,S]^2\times[1/R,R] \subset  \mathds{R
 \end{column}
 \end{columns}
 \begin{itemize}
-\item Énergie~: $\mu = \mu_{unaire} + 2 \times \mu_{binaire}$
+\item \'Energie~: $E = \sum_i E_1(x_i) + \alpha_{0} \times \sum_{i<j} E_2(x_i,x_j)$
 \begin{itemize}
-\item $\tilde \mu_{unaire}(b \in \mathcal{B})=\alpha_{0} - volume(b)$ avec $\alpha_{0} \in \Re^{+*}$ ;
-\item $\tilde \mu_{binaire}(b \in \mathcal{B}, b' \in \mathcal{B})) = volume(b \cap b')$.
+\item $E_1(x_i)=\alpha_{0} - volume(x_i)$ avec $\alpha_{0}>0$ ;
+\item $E_2(x_i,x_j) = volume(x_i \cap x_j)$.
 \end{itemize}
 \item Contraintes~:  $\mathcal{PLU}$, implémentation par rejet (taux d'acceptation à 0)
 \end{itemize}
-
-
 \end{frame}
 
 \begin{frame}
@@ -206,17 +212,9 @@ avec $\mathcal{B}=\{1...\vert \mathcal{L}\vert\}\times [0,W]\times[0,H]\times[-\
 \frametitle{Extraction des marquages aux sols}
 \emph{R\'esultats~:}
 \begin{center}
-%\begin{figure}[ht]
-%\animategraphics[scale=0.5, controls]{12}{}{1}{92}
-%\end{figure}
-%\movie[autostart,poster,externalviewer=/usr/bin/mplayer]{}{./images/video/animated.avi}
-%\href{run:/usr/bin/mplayer -fs ./images/video/animated.avi}{Go}
-\includemedia[
-    width=4cm,height=4cm,
-    activate=pageopen,
-    addresource=images/video/animated.flv,
-    flashvars={source=images/video/animated.flv}
-]{}{VPlayer.swf}
+\begin{figure}[ht]
+\animategraphics[scale=0.5, controls]{12}{}{1}{92}
+\end{figure}
 \end{center}
 \end{frame}
 
@@ -270,13 +268,22 @@ The more a pair of objects $I_{rec}(X_i)$ and $I_{rec}(X_j)$ are similar the mor
 
 \begin{frame}
 \frametitle{Autres applications}
+\begin{columns}
+\begin{column}{0.5\textwidth}
 \begin{itemize}
-\item Symbologie C Rémy
-\item JPB
+\item Symbologie des dynamiques urbaines (Cécile Rémy)
+\item Analyse de façades (Jean-Pascal Burochin)
 \item multi objets...
 \end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{figure}
+\includegraphics[width = 0.9\linewidth]{snapshots}\\
+\includegraphics[width = 0.9\linewidth]{symbo_libre}
+\end{figure}
+\end{column}
+\end{columns}
 \end{frame}
-
 
 \section{Reproductibilité}
 \begin{frame}
@@ -377,7 +384,28 @@ optimize(c,samp,sch,end,visitor);
 
 \begin{frame}
 \frametitle{Coal Mining}
-Exemple de change point analysis de Green (1995).
+Exemple d'analyse de points de changement multiples de Green (1995).
+\emph{Le probl\`eme~:} 
+\begin{itemize}
+\item Calculer la distribution a posteriori de points de changement
+\end{itemize}
+\emph{Les concepts~:}
+\begin{itemize}
+\item MPP~:  $\mathcal{C} = \cup_{n}\mathcal{B}^n$\\
+avec $\mathcal{B}=[0,W]\times[0,H]\times[-S,S]^2\times[1/R,R] \subset  \mathds{R}^{5}$
+\item Noyaux~: Naissance/mort, translation d'une arête, rotation/homothétie autour d'un coin, Division/Fusion
+\item Processus de référence~:
+\begin{itemize}
+\item Processus de poisson sur $n$
+\item Uniforme sur $\mathcal{B}$
+\end{itemize}
+\item \'Energie~: $E = \sum_i E_1(x_i) + \alpha_{0} \times \sum_{i<j} E_2(x_i,x_j)$
+\begin{itemize}
+\item $E_1(x_i)=\alpha_{1} - E_{data}(x_i)$ avec $\alpha_{0}>0$ ;
+\item $E_2(x_i,x_j) = surface(x_i \cap x_j)$.
+\end{itemize}
+\end{itemize}
+
 \begin{itemize}
 \item 
 \item 
