@@ -53,6 +53,27 @@ TODO: JP
 \end{frame}
 
 
+\begin{frame}{RJMCMC + Recuit Simulé = Optimisation Stochastique}
+
+\begin{block}{Recuit simulé}
+La pdf cible $f_n(x)$ dépend d'une énergie $E(x)$ et d'une température $T_n$ :
+\begin{itemize}
+\item \textit{e.g.:} $f_n(x) = \frac{1}{Z}.e^\frac{-E(x)}{T_n}$
+\end{itemize}
+\end{block}
+
+\begin{block}{Optimisation stochastique }
+Avec $T_n\overset{n\rightarrow\infty}{\longrightarrow} 0$ (suffisament lentement), $f_n$ échantillonne le(s) \textbf{minimum global de $E$} 
+\begin{itemize}
+\item En pratique, schéma de décroissance géométrique $T_n=\alpha^n.T_0$
+\end{itemize}
+\end{block}
+
+\includegraphics[height=2.8cm]{configuration}\hfill\includegraphics[height=2.8cm]{schedule}
+\end{frame}
+
+
+
 \begin{frame}
 \frametitle{RJMCMC et MPP}
 TODO: MB
@@ -271,74 +292,6 @@ Le tout sous licence libre : CeCILL-B.
 \end{frame}
 
 
-
-\begin{frame}
-\frametitle{Coal Mining}
-Exemple de change point analysis de Green (1995).
-\begin{itemize}
-\item 
-\item 
-\item 
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Lamps}
-Exemple de problème d'optimisation pour la programmation génétique d'Alberto Tonda (2010?).
-\begin{itemize}
-\item 
-\item 
-\item 
-\end{itemize}
-\end{frame}
-
-\section{Conclusion}
-\begin{frame}
-\frametitle{Conclusion et perspectives}
-\begin{itemize}
-\item Recherche reproductible
-\item $\Rightarrow$ Appel à Contribution ?
-\end{itemize}
-\emph{Nouvelles applications~:} 
-\begin{itemize}
-\item Maillage simplifié (espace de recherche des triangulations)
-\item Appariement de données
-\item Recalage
-\item ...
-\end{itemize}
-
-\emph{Parallelisation et passage à l'échelle:} 
-\begin{itemize}
-\item Rien de spécifique au géospatial ni a l'espace ambient pour l'instant (cf Verdié)
-\item Distributed tempering
-\item Openmole
-\end{itemize}
-
-\end{frame}
-\begin{frame}{RJMCMC + Recuit Simulé = Optimisation Stochastique}
-
-\begin{block}{Recuit simulé}
-La pdf cible $f_n(x)$ dépend d'une énergie $E(x)$ et d'une température $T_n$ :
-\begin{itemize}
-\item \textit{e.g.:} $f_n(x) = \frac{1}{Z}.e^\frac{-E(x)}{T_n}$
-\end{itemize}
-\end{block}
-
-\begin{block}{Optimisation stochastique }
-Avec $T_n\overset{n\rightarrow\infty}{\longrightarrow} 0$ (suffisament lentement), $f_n$ échantillonne le(s) \textbf{minimum global de $E$} 
-\begin{itemize}
-\item En pratique, schéma de décroissance géométrique $T_n=\alpha^n.T_0$
-\end{itemize}
-\end{block}
-
-\includegraphics[height=2.8cm]{configuration}\hfill\includegraphics[height=2.8cm]{schedule}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% SECTION
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section*{Library}
-
 \begin{frame}[containsverbatim]{Library - Quickstart Code Sample}
 \tiny
 \begin{lstlisting}
@@ -417,5 +370,48 @@ optimize(c,samp,sch,end,visitor);
 \end{frame}
 
 
+\begin{frame}
+\frametitle{Coal Mining}
+Exemple de change point analysis de Green (1995).
+\begin{itemize}
+\item 
+\item 
+\item 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Lamps}
+Exemple de problème d'optimisation pour la programmation génétique d'Alberto Tonda (2010?).
+\begin{itemize}
+\item 
+\item 
+\item 
+\end{itemize}
+\end{frame}
+
+\section{Conclusion}
+\begin{frame}
+\frametitle{Conclusion et perspectives}
+\begin{itemize}
+\item Recherche reproductible
+\item $\Rightarrow$ Appel à Contribution ?
+\end{itemize}
+\emph{Nouvelles applications~:} 
+\begin{itemize}
+\item Maillage simplifié (espace de recherche des triangulations)
+\item Appariement de données
+\item Recalage
+\item ...
+\end{itemize}
+
+\emph{Parallelisation et passage à l'échelle:} 
+\begin{itemize}
+\item Rien de spécifique au géospatial ni a l'espace ambient pour l'instant (cf Verdié)
+\item Distributed tempering
+\item Openmole
+\end{itemize}
+
+\end{frame}
 
 \end{document}
