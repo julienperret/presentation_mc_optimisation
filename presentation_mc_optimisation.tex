@@ -154,7 +154,12 @@ avec $\mathcal{B}=\{1...\vert \mathcal{L}\vert\}\times [0,W]\times[0,H]\times[-\
 %\end{figure}
 %\movie[autostart,poster,externalviewer=/usr/bin/mplayer]{}{./images/video/animated.avi}
 %\href{run:/usr/bin/mplayer -fs ./images/video/animated.avi}{Go}
-\includemedia[addresource=animated.avi]{}{animated.avi}
+\includemedia[
+    width=4cm,height=4cm,
+    activate=pageopen,
+    addresource=images/video/animated.flv,
+    flashvars={source=images/video/animated.flv}
+]{}{VPlayer.swf}
 \end{center}
 \end{frame}
 
