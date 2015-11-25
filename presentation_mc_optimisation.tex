@@ -14,15 +14,19 @@
 \addmediapath{./images/video/}
 
 \title{Optimisation stochastique, (RJ)MCMC\\ et applications g\'eospatiales}
-\author{}
+\author{\underline{Mathieu Brédif}, \underline{Julien Perret}, Bahman Soheilian\\Mickael Brasebin et Alexandre Hervieu}
 \institute{IGN}
 \date{2015}
 
 \begin{document}
 \frame{\titlepage}
  
+ 
+\section{Introduction}
+
 \begin{frame}
 \frametitle{Contexte}
+TODO: JP
 \begin{itemize}
 \item La recherche de l'IGN a souvent des probl\`emes d'optimisation (comme tout le monde)
 \item D\'eveloppement d'outils \emph{sp\'ecifiques} (g\'en\'eralisation carto)
@@ -30,54 +34,21 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-\frametitle{La \emph{libRJMCMC}}
-Elle propose~:
-\begin{itemize}
-\item un \'echantillonneur RJMCMC
-\item un recuit simul\'e (ou parallel tempering)
-\item des exemples et des applications
-\end{itemize}
-Plusieurs impl\'ementations~:
-\begin{itemize}
-\item C++ \small[\url{http://github.com/IGNF/librjmcmc}], license CeCILL-B
-\item Java \small[\url{http://github.com/IGNF/librjmcmc4j}], license XXX
-\item Scala \small[\url{http://github.com/IGNF/librjmcmc4s}], license XXX
-\end{itemize}
-Le tout sous licence libre.
-\end{frame}
 
 \begin{frame}
-\frametitle{Coal Mining}
-Exemple de change point analysis de Green (1995).
-\begin{itemize}
-\item 
-\item 
-\item 
-\end{itemize}
+\frametitle{RJMCMC et MPP}
+TODO: MB
+rappel vite fait, notations, noyaux...
 \end{frame}
 
-\begin{frame}
-\frametitle{Circle Packing}
-Exemple jeu.
-\begin{itemize}
-\item 
-\item 
-\item 
-\end{itemize}
-\end{frame}
 
-\begin{frame}
-\frametitle{Lamps}
-Exemple de problème d'optimisation pour la programmation génétique d'Alberto Tonda (2010?).
-\begin{itemize}
-\item 
-\item 
-\item 
-\end{itemize}
-\end{frame}
 
 \section{Applications}
+
+\begin{frame}
+TODO: MB
+images resultats
+\end{frame}
 
 \begin{frame}
 \frametitle{Reconstruction d'emprises de bâtiments rectangulaires}
@@ -102,6 +73,53 @@ avec $\mathcal{B}=[0,W]\times[0,H]\times[-S,S]^2\times[1/R,R] \subset  \mathds{R
 \end{itemize}
 \end{itemize}
 \end{frame}
+
+
+\begin{frame}
+\frametitle{Simplu3D}
+\emph{Le probl\`eme~:}  Simulation des droits \`a batir
+\begin{itemize}
+\item Génération de configurations bâties pour évaluer l'influence des réglements des PLU
+\end{itemize}
+\emph{Les concepts~:}
+\begin{columns}
+\begin{column}{0.55\textwidth}
+\begin{itemize}
+\item MPP~:  $ \mathcal{C} =\mathcal{PLU} \cap \cup_{n} \mathcal{B}^n$  avec $\mathcal{B}  \subset  \mathds{R}^{6}$
+\item Noyaux~: mêmes noyaux + Changement de hauteur
+\end{itemize}
+\end{column}
+\begin{column}{0.45\textwidth}
+ \includegraphics[width=\textwidth]{boiteFin.png}
+\end{column}
+\end{columns}
+\begin{itemize}
+\item Énergie~: $\mu = \mu_{unaire} + 2 \times \mu_{binaire}$
+\begin{itemize}
+\item $\tilde \mu_{unaire}(b \in \mathcal{B})=\alpha_{0} - volume(b)$ avec $\alpha_{0} \in \Re^{+*}$ ;
+\item $\tilde \mu_{binaire}(b \in \mathcal{B}, b' \in \mathcal{B})) = volume(b \cap b')$.
+\end{itemize}
+\item Contraintes~:  $\mathcal{PLU}$, implémentation par rejet (taux d'acceptation à 0)
+\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Simplu3D}
+\emph{R\'esultats:}
+ \includegraphics[width=\textwidth]{simplu3D1.png}
+\end{frame}
+
+\begin{frame}
+\frametitle{Simplu3D}
+\emph{R\'esultats:}
+ \includegraphics[width=\textwidth]{simplu3D2.png}
+\end{frame}
+
+
+
+
 
 \begin{frame}
 \frametitle{Extraction des marquages aux sols}
@@ -141,71 +159,79 @@ avec $\mathcal{B}=\{1...\vert \mathcal{L}\vert\}\times [0,W]\times[0,H]\times[-\
 \end{frame}
 
 \begin{frame}
-\frametitle{Simplu3D}
-\emph{Le probl\`eme~:}  Simulation des droits \`a batir
+\frametitle{Autres applications}
 \begin{itemize}
-\item Génération de configurations bâties pour évaluer l'influence des réglements des PLU
+\item Symbologie C Rémy
+\item JPB
+\item multi objets...
 \end{itemize}
-\emph{Les concepts~:}
-\begin{columns}
-\begin{column}{0.55\textwidth}
-\begin{itemize}
-\item MPP~:  $ \mathcal{C} =\cup_{n} \mathcal{B}^n$  avec $\mathcal{B}  \subset  \mathds{R}^{6}$
-\item Noyaux~: Naissance/mort, translation, rotation, changement de dimension (longueur, largeur ou hauteur)
-\end{itemize}
-\end{column}
-\begin{column}{0.45\textwidth}
- \includegraphics[width=\textwidth]{boiteFin.png}
-\end{column}
-\end{columns}
-\begin{itemize}
-\item Énergie~: $\mu = \mu_{unaire} + 2 \times \mu_{binaire}$
-\begin{itemize}
-\item $\tilde \mu_{unaire}(b \in \mathcal{B})=\alpha_{0} - volume(b)$ avec $\alpha_{0} \in \Re^{+*}$ ;
-\item $\tilde \mu_{binaire}(b \in \mathcal{B}, b' \in \mathcal{B})) = volume(b \cap b')$.
-\end{itemize}
-\item Contraintes~:  $ \mathcal{S} = \mathcal{PLU} \cap  \mathcal{C}   $
-\end{itemize}
-
-
 \end{frame}
 
-\begin{frame}
-\frametitle{Simplu3D}
-\emph{R\'esultats:}
- \includegraphics[width=\textwidth]{simplu3D1.png}
-\end{frame}
 
+\section{Reproductibilité}
 \begin{frame}
-\frametitle{Simplu3D}
-\emph{R\'esultats:}
- \includegraphics[width=\textwidth]{simplu3D2.png}
-\end{frame}
-
-\begin{frame}
-\frametitle{Perspectives}
-\emph{Parallelisation~:} 
+\frametitle{La \emph{libRJMCMC}}
+Elle propose~:
 \begin{itemize}
-\item Distributed tempering
-\item De l'espace de recherche -> passage à l'échelle
-\item Openmole
+\item un \'echantillonneur RJMCMC
+\item un recuit simul\'e (ou parallel tempering)
+\item des exemples et des applications
 \end{itemize}
-
-\emph{Nouvelles applications~:} 
+Plusieurs impl\'ementations~:
 \begin{itemize}
-\item Maillage simplifié (espace de recherche des triangulations)
-\item ...
+\item C++ \small[\url{http://github.com/IGNF/librjmcmc}]
+\item Java \small[\url{http://github.com/IGNF/librjmcmc4j}]
+\item Scala \small[\url{http://github.com/IGNF/librjmcmc4s}]
+\end{itemize}
+Le tout sous licence libre : CeCILL-B.
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Coal Mining}
+Exemple de change point analysis de Green (1995).
+\begin{itemize}
+\item 
+\item 
+\item 
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{Conclusion}
+\frametitle{Lamps}
+Exemple de problème d'optimisation pour la programmation génétique d'Alberto Tonda (2010?).
+\begin{itemize}
+\item 
+\item 
+\item 
+\end{itemize}
+\end{frame}
+
+\section{Conclusion}
+\begin{frame}
+\frametitle{Conclusion et perspectives}
 \begin{itemize}
 \item Recherche reproductible
 \item $\Rightarrow$ Appel à Contribution ?
 \end{itemize}
+\emph{Nouvelles applications~:} 
+\begin{itemize}
+\item Maillage simplifié (espace de recherche des triangulations)
+\item Appariement de données
+\item Recalage
+\item ...
+\end{itemize}
+
+\emph{Parallelisation et passage à l'échelle:} 
+\begin{itemize}
+\item Rien de spécifique au géospatial ni a l'espace ambient pour l'instant (cf Verdié)
+\item Distributed tempering
+\item Openmole
+\end{itemize}
 
 \end{frame}
+
 
 
 \end{document}
