@@ -5,9 +5,13 @@
 \usepackage{dsfont}
 \usepackage{stmaryrd}
 \usepackage{graphicx}
-\usepackage{animate}
+%\usepackage{animate}
+%\usepackage{multimedia}
+\usepackage{hyperref}
+\usepackage{media9}
 
 \graphicspath{{./images/}{./images/video/}}
+\addmediapath{./images/video/}
 
 \title{Optimisation stochastique, (RJ)MCMC\\ et applications g\'eospatiales}
 \author{}
@@ -127,10 +131,12 @@ avec $\mathcal{B}=\{1...\vert \mathcal{L}\vert\}\times [0,W]\times[0,H]\times[-\
 \frametitle{Extraction des marquages aux sols}
 \emph{R\'esultats~:}
 \begin{center}
-\begin{figure}[ht]
-\animategraphics[scale=0.5, controls]{12}{}{1}{92}
-\end{figure}
-sss
+%\begin{figure}[ht]
+%\animategraphics[scale=0.5, controls]{12}{}{1}{92}
+%\end{figure}
+%\movie[autostart,poster,externalviewer=/usr/bin/mplayer]{}{./images/video/animated.avi}
+%\href{run:/usr/bin/mplayer -fs ./images/video/animated.avi}{Go}
+\includemedia[addresource=animated.avi]{}{animated.avi}
 \end{center}
 \end{frame}
 
