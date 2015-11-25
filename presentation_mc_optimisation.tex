@@ -6,7 +6,24 @@
 \usepackage{stmaryrd}
 \usepackage{graphicx}
 \usepackage{animate}
+\usepackage{listings}
+\RequirePackage{tikz}
+\usetikzlibrary{arrows}
 
+\lstset{language=C++,
+  basicstyle=\tiny,
+  frame=single,
+  captionpos=b,
+  linewidth=1.02\linewidth,
+  commentstyle=\color{green},
+  stringstyle=\color{red},
+  identifierstyle=\ttfamily,
+  keywordstyle=\color{blue},
+  texcl=true
+%  breaklines=true
+}
+\newcommand{\patternscale}{.3}
+\newcommand{\patternspace}{1mm}
 \graphicspath{{./images/}{./images/video/}}
 
 \title{Optimisation stochastique, (RJ)MCMC\\ et applications g\'eospatiales}
@@ -22,7 +39,7 @@
 \begin{itemize}
 \item La recherche de l'IGN a souvent des probl\`emes d'optimisation (comme tout le monde)
 \item D\'eveloppement d'outils \emph{sp\'ecifiques} (g\'en\'eralisation carto)
-\item D\'eveloppement d'un biblioth\`eque plus \emph{g\'en\'erique}
+\item D\'eveloppement d'une biblioth\`eque plus \emph{g\'en\'erique}
 \end{itemize}
 \end{frame}
 
@@ -71,6 +88,24 @@ avec $\mathcal{B}=[0,W]\times[0,H]\times[-S,S]^2\times[1/R,R] \subset  \mathds{R
 
 \begin{frame}
 \frametitle{Extraction des marquages aux sols}
+\begin{center}
+\begin{figure}[ht]
+\includegraphics[angle = 90, width = .85\linewidth, scale = 0.7]{im_basis_crop_white}
+\end{figure}
+\begin{figure}[ht]
+\includegraphics[scale = \patternscale]{patterns/1.jpg}\hspace*{\patternspace}
+\includegraphics[scale = \patternscale]{patterns/2.jpg}\hspace*{\patternspace}
+\includegraphics[scale = \patternscale]{patterns/3.jpg}\hspace*{\patternspace}
+\includegraphics[scale = \patternscale]{patterns/4.jpg}\hspace*{\patternspace}
+\includegraphics[scale = \patternscale]{patterns/5.jpg}\hspace*{\patternspace}
+\includegraphics[scale = \patternscale]{patterns/6.jpg}\hspace*{\patternspace}
+\includegraphics[scale = \patternscale]{patterns/7.jpg}
+\end{figure}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Extraction des marquages aux sols}
 \emph{Le probl\`eme~:} 
 \begin{itemize}
 \item Détecter différents types de marquages sur une ortho-image.
@@ -100,8 +135,55 @@ avec $\mathcal{B}=\{1...\vert \mathcal{L}\vert\}\times [0,W]\times[0,H]\times[-\
 \begin{figure}[ht]
 \animategraphics[scale=0.5, controls]{12}{}{1}{92}
 \end{figure}
-sss
 \end{center}
+\end{frame}
+
+
+\begin{frame}{Model-driven perturbation kernels}
+We look for type and geometric  modifications that may be applied to an object, to yield a new object providing similar reconstructed image.
+
+%\begin{itemize}
+%\item Simultaneous modification of all parameters $(\ell_i,x_i,y_i,\theta_i,\lambda_i)$.
+%\item Distribution of such modifications is predicted using the collection of road-marking templates
+%\begin{itemize}
+ For $X_i=(\ell_i,0,0,0,1)$ and another object $X_j=(\ell_j,x_j,y_j,\theta_j,\lambda_j)$:
+
+\begin{eqnarray}
+\nonumber &&\ell_j\ \in \lbrace 1 \dots |\mathcal{L}|\rbrace\\
+\nonumber &&(x_j,y_j) \in [-\Delta_x,\delta_x,\Delta_x]\times [-\Delta_y,\delta_y,\Delta_y]\\
+\nonumber &&\theta_i \in [-\pi,\delta_\theta,\pi]\\
+\nonumber &&\lambda_i \in [1-\Delta_\lambda,\delta_\lambda,1+\Delta_\lambda]\\
+\nonumber && M_i \leftarrow ZMNC (I_{rec}(X_i),I_{rec}(X_j))
+\end{eqnarray} 
+%\end{itemize}
+%\end{itemize}
+The more a pair of objects $I_{rec}(X_i)$ and $I_{rec}(X_j)$ are similar the more corresponding perturbation is favoured to be tested. 
+\end{frame}
+
+\begin{frame}{Model-driven perturbation kernels: example 1}
+\begin{itemize}
+\item A $\texttt{BIKE}$ looks similar to a $y_j^*$-shifted $\pi$-rotated $\texttt{BIKE}$.
+\item The model-driven perturbation kernel will encourage such modification to be tested.
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width = 0.9\linewidth]{correlation_velo_velo}
+\caption{Geometric transformation perturbation without type modification}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Model-driven perturbation kernels: example 2}
+\begin{itemize}
+\item A $\texttt{BIG ARROW}$  looks similar to a $y_j^*$-shifted $\texttt{TRIANGLE}$ 
+ \item The model-driven perturbation kernel will encourage such geometric and type modification of to be tested.
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width = 0.9\linewidth]{correlation_f_t}
+\caption{Type modification together with geometric transformation.}
+\end{figure}
 \end{frame}
 
 \begin{frame}
@@ -168,6 +250,106 @@ sss
 \item Recherche reproductible
 \item $\Rightarrow$ Appel à Contribution ?
 \end{itemize}
+
+\end{frame}
+\begin{frame}{RJMCMC + Recuit Simulé = Optimisation Stochastique}
+
+\begin{block}{Recuit simulé}
+La pdf cible $f_n(x)$ dépend d'une énergie $E(x)$ et d'une température $T_n$ :
+\begin{itemize}
+\item \textit{e.g.:} $f_n(x) = \frac{1}{Z}.e^\frac{-E(x)}{T_n}$
+\end{itemize}
+\end{block}
+
+\begin{block}{Optimisation stochastique }
+Avec $T_n\overset{n\rightarrow\infty}{\longrightarrow} 0$ (suffisament lentement), $f_n$ échantillonne le(s) \textbf{minimum global de $E$} 
+\begin{itemize}
+\item En pratique, schéma de décroissance géométrique $T_n=\alpha^n.T_0$
+\end{itemize}
+\end{block}
+
+\includegraphics[height=2.8cm]{configuration}\hfill\includegraphics[height=2.8cm]{schedule}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% SECTION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Library}
+
+\begin{frame}[containsverbatim]{Library - Quickstart Code Sample}
+\tiny
+\begin{lstlisting}
+// Objects are circle
+typedef Circle_2<Simple_cartesian<double> >                     object;
+// Objective function
+typedef constant_energy<>                                       energy1;
+typedef intersection_area_binary_energy<>                       area;
+typedef multiplies_energy<constant_energy<>,area>               energy2;
+typedef graph_configuration<object, energy1, energy2>           configuration;
+// Reference process
+typedef poisson_distribution                                    distribution;
+typedef uniform_birth<object>                                   uniform_birth;
+typedef direct_sampler<distribution,uniform_birth>              reference_process;
+// RJMCMC sampler
+typedef metropolis_acceptance                                   acceptance;
+typedef result_of_make_uniform_birth_death_kernel<object>::type kernel;
+typedef rjmcmc::sampler<reference_process,acceptance, kernel>   sampler;
+\end{lstlisting}
+\begin{lstlisting}
+// Reference process
+distribution dpoisson(200);
+uniform_birth birth( Circle_2(Point_2(0,0),0.02), Circle_2(Point_2(1,1),0.1) );
+reference_process reference_pdf( dpoisson, birth );
+// Empty configuration linked with the minimized energy
+configuration c(-1, 10000.*area());
+// Visitors
+ostream_visitor osvisitor; tex_visitor texvisitor("quickstart_");
+composite_visitor<ostream_visitor,tex_visitor>  visitor(osvisitor,texvisitor);
+// Simulated Annealing
+sampler samp( reference_pdf, acceptance(), make_uniform_birth_death_kernel(birth,
+geometric_schedule<double> sch(200.,0.999999);                         0.5,0.5));
+max_iteration_end_test     end(10000001);
+optimize(c,samp,sch,end,visitor);
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}{Librairie}
+
+\begin{block}{Sortie du code de la diapo précédente (356 objets, 11s)}
+   \begin{minipage}[c]{.3\linewidth}
+\include{quickstart_000000009999999}
+   \end{minipage}
+   \begin{minipage}[c]{.65\linewidth}
+\setlength{\tabcolsep}{2pt}
+\renewcommand\arraystretch{0.5}\scalebox{.4}{
+\begin{tabular}{rrrrrrrrrrrr}
+\tiny Iteration & Objects & Pkernel & Akernel & Pkernel & Akernel & Accept & Time(ms) & Temp & U\_1 & U\_2 & U\\
+1000000 & 3 & 50.0251 & 6.91633 & 49.9749 & 6.92748 & 6.9219 & 250 & 73.5759 & -3 & -7.10543e-14 & -3 \\
+2000000 & 4 & 50.0137 & 6.9189 & 49.9863 & 6.9251 & 6.922 & 250 & 27.0671 & -4 & -1.13687e-13 & -4\\
+3000000 & 3 & 50.0744 & 6.70802 & 49.9256 & 6.73041 & 6.7192 & 260 & 9.95741 & -3 & -1.10134e-13 & -3 \\
+4000000 & 4 & 49.9794 & 6.67955 & 50.0206 & 6.67465 & 6.6771 & 250 & 3.66312 & -4 & -1.04805e-13 & -4 \\
+5000000 & 5 & 50.0122 & 6.64158 & 49.9878 & 6.64542 & 6.6435 & 270 & 1.34759 & -5 & -1.04805e-13 & -5\\
+6000000 & 13 & 49.9979 & 6.48967 & 50.0021 & 6.48753 & 6.4886 & 290 & 0.495749 & -13 & -1.04583e-13 & -13\\
+7000000 & 38 & 50.0199 & 5.25131 & 49.9801 & 5.25049 & 5.2509 & 430 & 0.182376 & -38 & -1.04305e-13 & -38\\
+8000000 & 286 & 49.9434 & 1.48088 & 50.0566 & 1.42798 & 1.4544 & 1700 & 0.0670923 & -286 & 1.84745 & -284.153\\
+9000000 & 333 & 49.9631 & 0.0140103 & 50.0369 & 0.00459661 & 0.0093 & 3490 & 0.0246819 & -333 & 8.72057 & -324.279\\
+10000000 & 356 & 50.0272 & 0.00559696 & 49.9728 & 0.00100054 & 0.0033 & 3890 & 0.00907995 & -356 & 18.3511 & -337.649\\
+\end{tabular}}
+   \end{minipage}
+\end{block}
+
+\begin{block}{Librairie Open source C++}
+\begin{itemize}
+\item C++ générique : templates, cf  STL / CGAL / boost\\
+\item Modulaire, Extensible
+\begin{itemize}
+ \item Modèles interchangeables pour les concepts orthogonaux: Schéma de température, énergies, noyaux...
+ \item Visiteurs: console, latex, wx GUI, shapefile...
+ \item Support pour du multi-objets
+\end{itemize}
+\end{itemize}
+\end{block}
 
 \end{frame}
 
