@@ -45,18 +45,11 @@
 \begin{frame}
 \frametitle{Contexte}
 \begin{itemize}
-<<<<<<< HEAD
 \item Les chercheurs de l'IGN ont souvent des probl\`emes d'optimisation\\
-(comme (presque) tout le monde)\\
-il y a peu de chance que \c{c}a change 
+\item ... mais fonctions objectifs et espaces de recherche complexes
 \item D\'eveloppement d'outils \emph{sp\'ecifiques}\\
 (g\'en\'eralisation cartographique, r\'eseau g\'eod\'esique, etc.)\\
 parfois en redéveloppant des algorithmes similaires
-=======
-\item La recherche de l'IGN a souvent des probl\`emes d'optimisation
-\item ... mais fonctions objectifs et espaces de recherche complexes
-\item D\'eveloppement d'outils \emph{sp\'ecifiques} (eg: g\'en\'eralisation carto)
->>>>>>> 1d8cb8164746084a5c6e13478d1200918856e4b0
 \item D\'eveloppement d'une biblioth\`eque plus \emph{g\'en\'erique}
 \begin{itemize}
 \item factorisation de code
@@ -160,11 +153,7 @@ avec $\mathcal{B}=[0,W]\times[0,H]\times[-S,S]^2\times[1/R,R] \subset  \mathds{R
 \end{column}
 \end{columns}
 \begin{itemize}
-<<<<<<< HEAD
 \item \'Energie~: $E = \sum_i E_1(x_i) + \alpha_{0} \times \sum_{i<j} E_2(x_i,x_j)$
-=======
-\item Énergie~:  $E = \sum_i E_1(x_i) + 2\sum_{i<j} E_2(x_i,x_j)$
->>>>>>> 1d8cb8164746084a5c6e13478d1200918856e4b0
 \begin{itemize}
 \item $E_1(x_i)=\alpha_{0} - volume(x_i)$ avec $\alpha_{0}>0$ ;
 \item $E_2(x_i,x_j) = volume(x_i \cap x_j)$.
@@ -231,19 +220,6 @@ avec $\mathcal{B}=\{1...\vert \mathcal{L}\vert\}\times [0,W]\times[0,H]\times[-\
 \end{itemize}
 \end{frame}
 %
-<<<<<<< HEAD
-\begin{frame}
-\frametitle{Extraction des marquages aux sols}
-\emph{R\'esultats~:}
-\begin{center}
-\begin{figure}[ht]
-\animategraphics[scale=0.5, controls]{12}{}{1}{92}
-\end{figure}
-\end{center}
-\end{frame}
-
-=======
->>>>>>> 1d8cb8164746084a5c6e13478d1200918856e4b0
 
 \begin{frame}{Marquages: Noyau de naissance data-driven}
 Analyse d'image préalable guidant la naissance :
@@ -289,19 +265,14 @@ $P_i$ est échantillonné sur 1 grille 4D $(dx,dy,d\theta,d\lambda)$ pour chaque
 \frametitle{Extraction des marquages aux sols}
 \emph{R\'esultats~:}
 \begin{center}
-%\begin{figure}[ht]
-%\animategraphics[scale=0.5, controls]{12}{}{1}{92}
-%\end{figure}
-%\movie[autostart,poster,externalviewer=/usr/bin/mplayer]{}{./images/video/animated.avi}
-%\href{run:/usr/bin/mplayer -fs ./images/video/animated.avi}{Go}
-\includemedia[addresource=animated.avi]{}{animated.avi}
+\begin{figure}[ht]
+\animategraphics[scale=0.5, controls]{12}{}{1}{92}
+\end{figure}
 \end{center}
 \end{frame}
 
 \begin{frame}
 \frametitle{Autres applications}
-\begin{columns}
-\begin{column}{0.5\textwidth}
 \begin{itemize}
 %\item Symbologie des dynamiques urbaines (Cécile Rémy)
 \item Symbologie \hfill \includegraphics[width = 0.5\linewidth]{symbology}
@@ -309,14 +280,6 @@ $P_i$ est échantillonné sur 1 grille 4D $(dx,dy,d\theta,d\lambda)$ pour chaque
 \item Multi objets
 \item ...
 \end{itemize}
-\end{column}
-\begin{column}{0.5\textwidth}
-\begin{figure}
-\includegraphics[width = 0.9\linewidth]{snapshots}\\
-\includegraphics[width = 0.9\linewidth]{symbo_libre}
-\end{figure}
-\end{column}
-\end{columns}
 \end{frame}
 
 \section{Reproductibilité}
@@ -420,44 +383,66 @@ optimize(c,samp,sch,end,visitor);
 
 
 \begin{frame}
-\frametitle{Coal Mining}
+\frametitle{Analyse de points de changement multiples}
 Exemple d'analyse de points de changement multiples de Green (1995).
 \emph{Le probl\`eme~:} 
 \begin{itemize}
-\item Calculer la distribution a posteriori de points de changement
+\item Calculer la distribution a posteriori de points de changement à partir d'une série d'événements
 \end{itemize}
 \emph{Les concepts~:}
 \begin{itemize}
-\item MPP~:  $\mathcal{C} = \cup_{n}\mathcal{B}^n$\\
-avec $\mathcal{B}=[0,W]\times[0,H]\times[-S,S]^2\times[1/R,R] \subset  \mathds{R}^{5}$
-\item Noyaux~: Naissance/mort, translation d'une arête, rotation/homothétie autour d'un coin, Division/Fusion
+\item $\mathcal{C} = \cup\mathcal{S}^k \cup\mathcal{H}^{k+1}$\\
+avec $\mathcal{S}=[0,L] \subset \mathds{R}$ et $\mathcal{H} \subset \mathds{R}$
+\item Noyaux~: Naissance/mort, changement d'une position ou d'une hauteur
 \item Processus de référence~:
 \begin{itemize}
-\item Processus de poisson sur $n$
-\item Uniforme sur $\mathcal{B}$
+\item Processus de poisson $(\lambda = 3)$ sur $k$
+\item Even numbered order statistics de $2k+1$ points sur $[0,L]$ pour $\mathcal{S}$
+\item Gamma $(\alpha = 1,\beta = 200)$ sur $\mathcal{H}$
 \end{itemize}
-\item \'Energie~: $E = \sum_i E_1(x_i) + \alpha_{0} \times \sum_{i<j} E_2(x_i,x_j)$
-\begin{itemize}
-\item $E_1(x_i)=\alpha_{1} - E_{data}(x_i)$ avec $\alpha_{0}>0$ ;
-\item $E_2(x_i,x_j) = surface(x_i \cap x_j)$.
-\end{itemize}
-\end{itemize}
-
-\begin{itemize}
-\item 
-\item 
-\item 
+\item Vraissemblance~: $log likelihood = \displaystyle\sum_{i=1}^n log {x(y_i)} - \int_0^L x(t)dt$
 \end{itemize}
 \end{frame}
 
 \begin{frame}
+\frametitle{Résultats}
+\includegraphics[width = 0.5\linewidth]{posterior_mean_rate}\\
+\includegraphics[width = 0.5\linewidth]{positions_change_points}
+\end{frame}
+
+\begin{frame}
 \frametitle{Lamps}
-Exemple de problème d'optimisation pour la programmation génétique d'Alberto Tonda (2010?).
+Exemple de problème d'optimisation pour la programmation génétique d'Alberto Tonda (2010).
+\emph{Le probl\`eme~:} 
 \begin{itemize}
-\item 
-\item 
-\item 
+\item Optimiser le nombre et la position de lampes pour éclairer une pièce
 \end{itemize}
+\emph{Les concepts~:}
+\begin{itemize}
+\item MPP~:  $\mathcal{C} = \cup_{n}\mathcal{L}^n$\\
+avec $\mathcal{L}=[0,W]\times[0,H] \subset  \mathds{R}^{2}$
+\item Noyaux~: Naissance/mort, translation
+\end{itemize}
+
+\begin{columns}
+\begin{column}{0.55\textwidth}
+\begin{itemize}
+\item Processus de référence~:
+\begin{itemize}
+\item Processus de Poisson sur $n$
+\item Probabilité uniforme sur $\mathcal{L}$
+\end{itemize}
+\item \'Energie~: $E = \sum_i E_1(x_i) + \alpha_{0} \times \sum_{i<j} E_2(x_i,x_j)$
+\begin{itemize}
+\item $E_1(x_i) = -surface\_inside\_room(x_i)$ ;
+\item $E_2(x_i,x_j) = surface(x_i \cap x_j)$.
+\end{itemize}
+\end{itemize}
+\end{column}
+\begin{column}{0.45\textwidth}
+ %\includegraphics[width=\textwidth]{lamps}
+\end{column}
+\end{columns}
 \end{frame}
 
 \section{Conclusion}
